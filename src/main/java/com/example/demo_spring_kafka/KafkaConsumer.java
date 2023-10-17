@@ -3,6 +3,7 @@ package com.example.demo_spring_kafka;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -17,7 +18,7 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(topics = "int.notification-system.notification", groupId = "int.notification-consumer")
-    public void consume(String message) {
+    public void consume(List<String> messages) {
         // Capture start time for the first message
         if (startTime == 0) {
             startTime = System.currentTimeMillis();
@@ -25,14 +26,20 @@ public class KafkaConsumer {
 
         var name = Thread.currentThread().getName();
         System.out.println("Current thread: " + name);
-        System.out.println("Consumed message: " + message);
-
         // Simulate processing time
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+
+        for (String message : messages) {
+            consume(message);
+        }
+    }
+
+    public void consume(String message) {
+        System.out.println("Consumed message: " + message);
 
         // Increment the counter
         int currentCount = counter.incrementAndGet();
