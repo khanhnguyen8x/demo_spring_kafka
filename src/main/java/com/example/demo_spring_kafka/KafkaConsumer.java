@@ -29,7 +29,7 @@ public class KafkaConsumer {
 
         // Simulate processing time
         try {
-            Thread.sleep(500);
+            Thread.sleep(300);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

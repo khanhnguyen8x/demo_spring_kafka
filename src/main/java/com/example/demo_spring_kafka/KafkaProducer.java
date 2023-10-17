@@ -11,5 +11,10 @@ public class KafkaProducer {
 
     public void sendMessage(String topic, String message) {
         kafkaTemplate.send(topic, message);
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
